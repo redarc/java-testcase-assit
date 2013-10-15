@@ -1,0 +1,73 @@
+<%@ jet 
+   package="jcat.testcase.gen" 
+   class="JcatTCBuilderGen"
+   imports=""
+%>
+
+<%
+	JcatTCGenArgs args = (JcatTCGenArgs)argument;
+    String pkgName = args.getPkgName();
+    String className = args.getClassName(); 
+%>
+
+package <%=pkgName%>;
+
+/**
+*   
+* @name <%=className%>TestModuleBuilder
+*       
+* @author 
+*       
+* @created 
+*       
+* @description   A builder class for {@link <%=className%>TestModule}. The setter methods can
+*               optionally be used to configure the test module. Call build to get an instance of
+*               {@link <%=className%>TestModule}.
+*       
+* @revision  first version 
+*  
+*/
+
+public class <%=className%>
+{
+    protected String param;
+
+    /**
+     * The constructor for this builder, should only be used by {@link <%=className%>TestModule} 
+     * 
+     */
+    protected <%=className%>TestModuleBuilder()
+    {
+    }
+    
+    /**
+     * Sets the attribute moLdn (Mandatory attribute)
+     * 
+     * @param param
+     * @return This builder
+     */
+    public <%=className%>setParam(String param)
+    {
+        this.param = param;
+        return this;
+    }
+    
+    /**
+     * Verifies that the mandatory attributes are set.
+     * Builds a <%=className%>TestModule using the values set by the setter methods.
+     *    
+     * @return a <%=className%>TestModule
+     */
+    public <%=className%>TestModule build() 
+    {
+        // Verify that mandatory attributes has a value set.
+
+        if(param == null)
+        {
+            String msg = "You must set a value to the mandatory attribute \"param\"."; 
+            throw new NullPointerException(msg);
+        }
+        
+        return new <%=className%>TestModule(this);
+    }
+}

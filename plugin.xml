@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="jcat-testcase-assit.contribution1"
+            nameFilter="*.java"
+            objectClass="org.eclipse.ui.IEditorInput">
+         <menu
+               label="Create JCAT Method"
+               path="additions"
+               id="jcat-testcase-assit.testcasemenu">
+            <separator name="group1"> 
+            </separator>
+         </menu>
+         <action
+               label="Attach"
+               class="jcattestcaseassit.popup.actions.AttachAction"
+               menubarPath="jcat-testcase-assit.testcasemenu/group1"
+               enablesFor="1"
+               id="jcat-testcase-assit.attachAction">
+         </action>
+         <action
+               label="Throughput"
+               class="jcattestcaseassit.popup.actions.ThroughputAction"
+               menubarPath="jcat-testcase-assit.testcasemenu/group1"
+               enablesFor="1"
+               id="jcat-testcase-assit.throughputAction">
+         </action>
+         <action
+               label="Handover"
+               class="jcattestcaseassit.popup.actions.HandoverAction"
+               menubarPath="jcat-testcase-assit.testcasemenu/group1"
+               enablesFor="1"
+               id="jcat-testcase-assit.handoverAction">
+         </action>
+      </objectContribution>
+      
+            <objectContribution
+            id="jcat-testcase-assit.contribution1"
+            objectClass="org.eclipse.jdt.core.IPackageFragment">
+         <menu
+               label="New JCAT TestCase"
+               path="additions"
+               id="jcat-testcase-assit.packageFragmentmenu">
+            <separator name="group1"> 
+            </separator>
+         </menu>
+         <action
+               label="New JCAT TestCase"
+               class="jcattestcaseassit.popup.actions.NewJCATTCAction"
+               menubarPath="jcat-testcase-assit.packageFragmentmenu"
+               enablesFor="1"
+               id="jcat-testcase-assit.newJCATTCAction">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

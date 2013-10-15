@@ -1,0 +1,68 @@
+<%@ jet 
+   package="jcat.testcase.gen" 
+   class="JcatTCModuleGen"
+   imports=""
+%>
+
+<%
+	JcatTCGenArgs args = (JcatTCGenArgs)argument;
+    String pkgName = args.getPkgName();
+    String className = args.getClassName(); 
+%>
+
+package <%=pkgName%>
+
+/**
+ *   
+ * @name <%=className%>
+ *       
+ * @author 
+ *       
+ * @created 
+ *       
+ * @description
+ *       
+ * @revision 
+ *  
+ */
+
+public class <%=className%> extends GratHelper
+{
+    // builder variables
+    private String param;
+
+
+
+    /**
+     * The constructor. It is used by the build method in the builder class. To get
+     * an instance of this class, use the builder.
+     * 
+     * @param builder An instance of the builder of this class
+     */
+    protected <%=className%>(<%=className%>Builder builder) 
+    {       
+        param=builder.param;        
+    }
+
+    /**
+     * Gets a new instance of the builder of this class {@link <%=className%>Builder}.
+     * 
+     * @return The builder.
+     */
+    public static <%=className%>Builder newBuilder() 
+    {
+        return new <%=className%>Builder();
+    }
+
+    /**
+     * This method is the test method. It creates the given MO (Managed Object).
+     *   
+     */
+    public void execute() throws ConnectionException
+    {
+
+    }
+}
+
+
+
