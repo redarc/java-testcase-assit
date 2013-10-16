@@ -3,31 +3,24 @@ package jcattestcaseassit.popup.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IOpenable;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.WorkingCopyOwner;
-import org.eclipse.jdt.internal.corext.codemanipulation.StubUtility;
-import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
-import org.eclipse.jdt.ui.CodeGeneration;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jdt.core.dom.QualifiedName;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -74,6 +67,7 @@ public class AttachAction implements IObjectActionDelegate {
 			Object obj = ssel.getFirstElement();
             if(obj instanceof IFileEditorInput){
 				IFileEditorInput fei = (IFileEditorInput)obj;
+				//IPersistableElement persistElem = fei.getPersistable();
 				IFile editFile = fei.getFile();
 				curJavaElem = JavaCore.create(editFile);
 				if(curJavaElem instanceof ICompilationUnit){
@@ -91,10 +85,17 @@ public class AttachAction implements IObjectActionDelegate {
 	   
 	    // Create working copy
 		try {
+			
+			/*
 			ICompilationUnit workingCopy = originalUnit.getWorkingCopy(new WorkingCopyOwner(){}, null);
-		    // Modify buffer and reconcile
+
+			// Modify buffer and reconcile
 		    IBuffer buffer = ((IOpenable)workingCopy).getBuffer();
+		    
+		    IType curClass = workingCopy.getTypes()[0]; 
+		    
 		    buffer.append("class X {}");
+		    
 		    workingCopy.reconcile(ICompilationUnit.NO_AST, false, null, null);
 		    
 		    // Commit changes
@@ -102,6 +103,56 @@ public class AttachAction implements IObjectActionDelegate {
 		    
 		    // Destroy working copy
 		    workingCopy.discardWorkingCopy();
+		    */
+			AST ast = AST.newAST(AST.JLS4);
+			CompilationUnit unit = ast.newCompilationUnit();
+			PackageDeclaration packageDeclaration = ast.newPackageDeclaration();
+			packageDeclaration.setName(ast.newSimpleName("example"));
+			unit.setPackage(packageDeclaration);
+			ImportDeclaration importDeclaration = ast.newImportDeclaration();
+			QualifiedName name = ast.newQualifiedName(
+					                        ast.newSimpleName("java"),
+					                        ast.newSimpleName("util"));
+			importDeclaration.setName(name);
+			importDeclaration.setOnDemand(true);
+			unit.imports().add(importDeclaration);
+			TypeDeclaration type = ast.newTypeDeclaration();
+			type.setInterface(false);
+			type.modifiers().add(ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+			type.setName(ast.newSimpleName("HelloWorld"));
+			MethodDeclaration methodDeclaration = ast.newMethodDeclaration();
+			methodDeclaration.setConstructor(false);
+			List modifiers = methodDeclaration.modifiers();
+			modifiers.add(ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+			modifiers.add(ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
+			methodDeclaration.setName(ast.newSimpleName("main"));
+			methodDeclaration.setReturnType2(ast.newPrimitiveType(PrimitiveType.VOID));
+			SingleVariableDeclaration variableDeclaration = ast.newSingleVariableDeclaration();
+			variableDeclaration.setType(ast.newArrayType(ast.newSimpleType(ast.newSimpleName("String"))));
+			variableDeclaration.setName(ast.newSimpleName("args"));
+			methodDeclaration.parameters().add(variableDeclaration);
+			org.eclipse.jdt.core.dom.Block block = ast.newBlock();
+			MethodInvocation methodInvocation = ast.newMethodInvocation();
+			name = 
+				ast.newQualifiedName(
+					ast.newSimpleName("System"),
+					ast.newSimpleName("out"));
+			methodInvocation.setExpression(name);
+			methodInvocation.setName(ast.newSimpleName("println")); 
+			InfixExpression infixExpression = ast.newInfixExpression();
+			infixExpression.setOperator(InfixExpression.Operator.PLUS);
+			StringLiteral literal = ast.newStringLiteral();
+			literal.setLiteralValue("Hello");
+			infixExpression.setLeftOperand(literal);
+			literal = ast.newStringLiteral();
+			literal.setLiteralValue(" world");
+			infixExpression.setRightOperand(literal);
+			methodInvocation.arguments().add(infixExpression);
+			ExpressionStatement expressionStatement = ast.newExpressionStatement(methodInvocation);
+			block.statements().add(expressionStatement);
+			methodDeclaration.setBody(block);
+			type.bodyDeclarations().add(methodDeclaration);
+			unit.types().add(type);
 		} catch (JavaModelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
