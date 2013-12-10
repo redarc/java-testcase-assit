@@ -38,7 +38,7 @@
          </action>
       </objectContribution>
       
-            <objectContribution
+      <objectContribution
             id="jcat-testcase-assit.contribution1"
             objectClass="org.eclipse.jdt.core.IPackageFragment">
          <menu
