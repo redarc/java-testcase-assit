@@ -144,7 +144,15 @@ public class AttachAction implements IObjectActionDelegate {
 			// break;
 			// }
 
-			String headContent = content.substring(0, offset);
+			String headContent =  "import org.testng.annotations.Parameters;"
+					+ "\nimport org.testng.annotations.Test;"
+					+ "\nimport se.ericsson.jcat.fw.annotations.Setup;"
+					+ "\nimport se.ericsson.jcat.fw.annotations.Teardown;"
+					+ "\nimport com.ericsson.ate.lte_ran_iov.testsupport.other.LteRm;"
+					+ "\nimport com.ericsson.msr.prepostchecker.EnbPrePostCheckOptions;"
+					+ "\nimport com.ericsson.msr.prepostchecker.EnbPrePostChecker;"
+					+ "\nimport com.ericsson.tac.jcat.TestBase;\n"
+					+content.substring(0, offset);
 			String tailContent = content.substring(offset, content.length());
 			//
 			// String newContent = headContent + "public void dosomething(){}" +
@@ -161,12 +169,12 @@ public class AttachAction implements IObjectActionDelegate {
 			IField[] fields = iType.getFields();
 			if (fields.length > 0) {
 				for (IField field : fields) {
-					if (field.toString().indexOf("int") != -1) {
+					if (field.toString().indexOf("Error") != -1) {
 						// System.out.println("YES++++++++++++++++++++++++++++++++++++++++++++++++YES");
 						autoInputFieldContent = "\n";
 						// MessageDialog.openInformation(shell,"Extend","Field is exiting!");
 					} else {
-						autoInputFieldContent = "\nprivate int i;\npublic void dosomething(){}";
+						autoInputFieldContent = "\n";
 						// MessageDialog.openInformation(shell,"Extend","Field has been created!");
 					}
 				}
@@ -174,13 +182,7 @@ public class AttachAction implements IObjectActionDelegate {
 				autoInputFieldContent = "\n    private UeNasMode ueNasMode;"
 						+ "\n    private EnbHandler enbHandler;"
 						+ "\n    private EnbTestHelper enbTestHelper;"
-						+ "\n    private EnbConfigHandlerBuilder enbOriginalConfig;"
-						+ "\n    private void doAttachDetach(){"
-						+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
-						+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
-						+ "\n        enbTestHelper.attachUes();"
-						+ "\n        enbTestHelper.detachUes();" 
-						+ "\n    }";
+						+ "\n    private EnbConfigHandlerBuilder enbOriginalConfig;";
 			}
 
 			IMethod[] methods = iType.getMethods();
@@ -193,7 +195,7 @@ public class AttachAction implements IObjectActionDelegate {
 							break;
 						} else {
 							autoInputMethodContent = "\n"
-									+ iType.getElementName() + "(){\nint i=1}";
+									+ iType.getElementName() + "(){\n}";
 						}
 					}
 				}
@@ -205,6 +207,12 @@ public class AttachAction implements IObjectActionDelegate {
 						+ "\n        enbHandler = EnbHandler.getInstance(LteRm.enb1);"
 						+ "\n        enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());"
 						+ "\n        enbOriginalConfig = EnbConfigHandler.getBuilder();"
+						+ "\n    }"
+						+ "\n    private void doAttachDetach(){"
+						+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
+						+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
+						+ "\n        enbTestHelper.attachUes();"
+						+ "\n        enbTestHelper.detachUes();" 
 						+ "\n    }";
 			}
 			// if (methods.length>0) {

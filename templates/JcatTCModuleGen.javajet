@@ -3,15 +3,24 @@
    class="JcatTCModuleGen"
    imports=""
 %>
-
 <%
 	JcatTCGenArgs args = (JcatTCGenArgs)argument;
     String pkgName = args.getPkgName();
     String className = args.getClassName(); 
 %>
+package <%=pkgName%>;
 
-package <%=pkgName%>
+import java.io.BufferedReader;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+
+import com.ericsson.ate.lte_ran_iov.testsupport.other.LteRm;
+import com.ericsson.ate.lte_ran_iov.testsupport.tool.uetools.ueinterfaces.UeNasMode;
+import com.ericsson.msr.handlers.*;
+import com.ericsson.msr.testhelpers.EnbTestHelper;
+import com.ericsson.tac.jcat.TestBase;
 /**
  *   
  * @name <%=className%>
@@ -26,41 +35,122 @@ package <%=pkgName%>
  *  
  */
 
-public class <%=className%> extends GratHelper
-{
-    // builder variables
-    private String param;
+public class <%=className%> extends TestBase{
 
-
-
-    /**
-     * The constructor. It is used by the build method in the builder class. To get
-     * an instance of this class, use the builder.
-     * 
-     * @param builder An instance of the builder of this class
-     */
-    protected <%=className%>(<%=className%>Builder builder) 
-    {       
-        param=builder.param;        
-    }
-
-    /**
-     * Gets a new instance of the builder of this class {@link <%=className%>Builder}.
-     * 
-     * @return The builder.
-     */
-    public static <%=className%>Builder newBuilder() 
-    {
+    @SuppressWarnings("serial")
+    private final HashMap<String, String> SysConstMap = new HashMap<String, String>(){
+        {
+        put("", "");
+        }
+    };
+    
+    private String testId = null;
+    private String description = null;
+    
+    // Cell parameters
+    private int cellCapRrcConnSetupReq = 0;
+    
+    private int[] eUtranCellId;
+    private boolean isTDD = false;
+    
+    private EnbHandler enbHandler;
+    private EnbTestHelper enbTestHelper;
+    private EnbConfigHandlerBuilder enbOriginalConfig;
+    
+    public static <%=className%>Builder newBuilder() {
         return new <%=className%>Builder();
     }
+    
+    protected <%=className%>(
+        <%=className%>Builder builder) {
+        testId = builder.getTestId();
+        description = builder.getDescription();
+    }
+    
+    public void execute() {
+        this.setTestcase(testId, description);
+        try {
+            // Initial basic parameters.
+            initialize();
 
-    /**
-     * This method is the test method. It creates the given MO (Managed Object).
-     *   
+            enbHandler = EnbHandler.getInstance(LteRm.enb1);
+            eUtranCellId = enbHandler.getEutranCellId();
+
+            //TODO implement in next delivery
+            // DeactiveFeatureState();
+
+            backENBStatus();
+            configENB();
+
+            enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());
+
+            enbTestHelper.prepareStp();
+            
+        } catch (Exception te) {
+            te.printStackTrace();
+            fail("Execution Exception~!!!!!");
+        } finally {
+            restoreENBStatus();
+        }
+    }
+    
+    private void initialize() {
+        setTestInfo("");
+        setTestStep("");
+
+        //Test line in Nanjing need setAuthenticationKey before attach
+        if(System.getProperty("testarea").equalsIgnoreCase("nanjing")){
+            LteRm.ue1.getNasModeBuilder().setAuthenticationKey(
+                    "01234567890123456789012345678901");
+        }
+    }
+    
+     /**
+     * TODO Deliver in next release
+     * Get the initial eNB configuration.<br/>
+     * @throws Exception
      */
-    public void execute() throws ConnectionException
-    {
-
+    private void backENBStatus() throws Exception {
+        setTestStep("Get the configuration");
+        setTestInfo("Backing up parameters so they can be restored later");
+        String eutranName = isTDD ? "EUtranCellTDD=" : "EUtranCellFDD=";
+        enbOriginalConfig = EnbConfigHandler.getBuilder();
+        for(int cellId : eUtranCellId) {
+            int originBandwidth = enbHandler.getCellBandwidth(eutranName + cellId);
+            enbOriginalConfig.addAttribute(eutranName + cellId, "bandwidth", String.valueOf(originBandwidth));
+        }
+    }
+    
+     /**
+     * TODO Deliver in next release
+     * Configure the eNB with the parameters of feature.<br/>
+     * @throws Exception
+     */
+    @SuppressWarnings("unused")
+    private void configENB() throws Exception {
+        setTestStep("start Config ENB");
+        EnbConfigHandlerBuilder enbCfgHandlerBuilder = EnbConfigHandler.getBuilder();
+        for(int cellId : eUtranCellId) {
+            enbCfgHandlerBuilder.addSystemConstant(SysConstMap.get("CELLCAPRRCCONNSETUPREQ"),String.valueOf(cellCapRrcConnSetupReq));
+        }
+        enbHandler.setConfig(enbCfgHandlerBuilder.build());
+    }
+    
+     /**
+     * TODO Deliver in next release
+     * Roll back the configuration of eNB.<br/>
+     * @throws Exception
+     */
+    private void restoreENBStatus() {
+        setTestStep("Clearup the ENB configuration");
+        for(String key : SysConstMap.keySet()) {
+             enbHandler.resetSystemConstant(SysConstMap.get(key));
+        }
+        try {
+            enbHandler.setNodeConfig(enbOriginalConfig.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

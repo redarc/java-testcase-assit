@@ -1,5 +1,11 @@
 package jcat.testcase.wizards;
 
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.corext.template.java.StaticImportResolver;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -38,6 +44,7 @@ import org.eclipse.ui.ide.IDE;
 public class JcatTCWizard extends Wizard implements INewWizard {
 	private JcatTCWizardPage page;
 	private ISelection selection;
+	private String curPkgName;
 
 	/**
 	 * Constructor for JcatTCWizard.
@@ -62,7 +69,7 @@ public class JcatTCWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-		final String containerName = page.getContainerName();
+		final String containerName = page.getContainerName();	
 		final String fileName = page.getFileName();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
@@ -115,6 +122,14 @@ public class JcatTCWizard extends Wizard implements INewWizard {
 	private void doFinish(String containerName,
 		                  String testCaseName,
 		                  IProgressMonitor monitor)throws CoreException {
+		//get current package name
+		if (selection instanceof IStructuredSelection) {
+			Object object = ((IStructuredSelection) selection).getFirstElement();
+			if (object instanceof IPackageFragment) {
+				curPkgName=((IPackageFragment) object).getElementName();
+			}
+		}
+		
 		// create a sample file
 		monitor.beginTask("Creating " + testCaseName, 4);
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -127,21 +142,25 @@ public class JcatTCWizard extends Wizard implements INewWizard {
 		
 		JcatTCGenArgs jargs = new JcatTCGenArgs();
 		jargs.setClassName(testCaseName.concat("Test"));
-		jargs.setPkgName("com.ericsson.msr.tests." + testCaseName);
+//		jargs.setPkgName("com.ericsson.msr.tests." + testCaseName);
+		jargs.setPkgName(curPkgName);
 		JcatTCGen gen = new JcatTCGen();
 		generatorJcatTC(container, testCaseName.concat("Test"), gen.generate(jargs), monitor);
 		monitor.worked(1);
 		
 		JcatTCGenArgs tcbuilderargs = new JcatTCGenArgs();
 		tcbuilderargs.setClassName(testCaseName.concat("TestModuleBuilder"));
-		tcbuilderargs.setPkgName("com.ericsson.msr.tests." + testCaseName);
+		tcbuilderargs.setModuleName(testCaseName.concat("TestModule"));
+//		tcbuilderargs.setPkgName("com.ericsson.msr.tests." + testCaseName);
+		tcbuilderargs.setPkgName(curPkgName);
 		JcatTCBuilderGen buildergen = new JcatTCBuilderGen();
 		generatorJcatTC(container, testCaseName.concat("TestModuleBuilder"), buildergen.generate(tcbuilderargs), monitor);
 		monitor.worked(2);
 		
 		JcatTCGenArgs jmoduleargs = new JcatTCGenArgs();
 		jmoduleargs.setClassName(testCaseName.concat("TestModule"));
-		jmoduleargs.setPkgName("com.ericsson.msr.tests." + testCaseName);
+//		jmoduleargs.setPkgName("com.ericsson.msr.tests." + testCaseName);
+		jmoduleargs.setPkgName(curPkgName);
 		JcatTCModuleGen modulegen = new JcatTCModuleGen();
 		generatorJcatTC(container, testCaseName.concat("TestModule"), modulegen.generate(jmoduleargs), monitor);
 		monitor.worked(3);
@@ -175,4 +194,23 @@ public class JcatTCWizard extends Wizard implements INewWizard {
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;
 	}
+	
+//	public void getPkgName() {
+//		String pkgString=null;
+//		IProject project=ResourcesPlugin.getWorkspace().getRoot().getProject();
+//		IJavaProject javaProject = JavaCore.create(project);
+//		if (javaProject.exists()&&javaProject!=null) {
+//			try {
+//				IPackageFragmentRoot packageFragmentRoot=javaProject.getPackageFragmentRoots()[0];
+//				for (IJavaElement javaElement:packageFragmentRoot.getChildren()) {
+//					if (javaElement instanceof IPackageFragment) {
+//						pkgString=javaElement.getElementName();
+//						System.out.println(pkgString);
+//					}
+//				}
+//			} catch (Exception e) {
+//				// TODO: handle exception
+//			}
+//		}
+//	}
 }

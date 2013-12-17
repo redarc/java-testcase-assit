@@ -12,29 +12,29 @@ public class JcatTCModuleGen
   }
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
-  protected final String TEXT_1 = "";
-  protected final String TEXT_2 = NL + NL + "package ";
-  protected final String TEXT_3 = NL + NL + "/**" + NL + " *   " + NL + " * @name ";
-  protected final String TEXT_4 = NL + " *       " + NL + " * @author " + NL + " *       " + NL + " * @created " + NL + " *       " + NL + " * @description" + NL + " *       " + NL + " * @revision " + NL + " *  " + NL + " */" + NL + "" + NL + "public class ";
-  protected final String TEXT_5 = " extends GratHelper" + NL + "{" + NL + "    // builder variables" + NL + "    private String param;" + NL + "" + NL + "" + NL + "" + NL + "    /**" + NL + "     * The constructor. It is used by the build method in the builder class. To get" + NL + "     * an instance of this class, use the builder." + NL + "     * " + NL + "     * @param builder An instance of the builder of this class" + NL + "     */" + NL + "    protected ";
-  protected final String TEXT_6 = "(";
-  protected final String TEXT_7 = "Builder builder) " + NL + "    {       " + NL + "        param=builder.param;        " + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * Gets a new instance of the builder of this class {@link ";
-  protected final String TEXT_8 = "Builder}." + NL + "     * " + NL + "     * @return The builder." + NL + "     */" + NL + "    public static ";
-  protected final String TEXT_9 = "Builder newBuilder() " + NL + "    {" + NL + "        return new ";
-  protected final String TEXT_10 = "Builder();" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * This method is the test method. It creates the given MO (Managed Object)." + NL + "     *   " + NL + "     */" + NL + "    public void execute() throws ConnectionException" + NL + "    {" + NL + "" + NL + "    }" + NL + "}" + NL + NL + NL;
-  protected final String TEXT_11 = NL;
+  protected final String TEXT_1 = "package ";
+  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.io.BufferedReader;" + NL + "" + NL + "import java.io.FileReader;" + NL + "import java.io.IOException;" + NL + "import java.util.HashMap;" + NL + "" + NL + "import com.ericsson.ate.lte_ran_iov.testsupport.other.LteRm;" + NL + "import com.ericsson.ate.lte_ran_iov.testsupport.tool.uetools.ueinterfaces.UeNasMode;" + NL + "import com.ericsson.msr.handlers.*;" + NL + "import com.ericsson.msr.testhelpers.EnbTestHelper;" + NL + "import com.ericsson.tac.jcat.TestBase;" + NL + "/**" + NL + " *   " + NL + " * @name ";
+  protected final String TEXT_3 = NL + " *       " + NL + " * @author " + NL + " *       " + NL + " * @created " + NL + " *       " + NL + " * @description" + NL + " *       " + NL + " * @revision " + NL + " *  " + NL + " */" + NL + "" + NL + "public class ";
+  protected final String TEXT_4 = " extends TestBase{" + NL + "" + NL + "    @SuppressWarnings(\"serial\")" + NL + "    private final HashMap<String, String> SysConstMap = new HashMap<String, String>(){" + NL + "        {" + NL + "        put(\"\", \"\");" + NL + "        }" + NL + "    };" + NL + "    " + NL + "    private String testId = null;" + NL + "    private String description = null;" + NL + "    " + NL + "    // Cell parameters" + NL + "    private int cellCapRrcConnSetupReq = 0;" + NL + "    " + NL + "    private int[] eUtranCellId;" + NL + "    private boolean isTDD = false;" + NL + "    " + NL + "    private EnbHandler enbHandler;" + NL + "    private EnbTestHelper enbTestHelper;" + NL + "    private EnbConfigHandlerBuilder enbOriginalConfig;" + NL + "    " + NL + "    public static ";
+  protected final String TEXT_5 = "Builder newBuilder() {" + NL + "        return new ";
+  protected final String TEXT_6 = "Builder();" + NL + "    }" + NL + "    " + NL + "    protected ";
+  protected final String TEXT_7 = "(";
+  protected final String TEXT_8 = NL + "        ";
+  protected final String TEXT_9 = "Builder builder) {" + NL + "        testId = builder.getTestId();" + NL + "        description = builder.getDescription();" + NL + "    }" + NL + "    " + NL + "    public void execute() {" + NL + "        this.setTestcase(testId, description);" + NL + "        try {" + NL + "            // Initial basic parameters." + NL + "            initialize();" + NL + "" + NL + "            enbHandler = EnbHandler.getInstance(LteRm.enb1);" + NL + "            eUtranCellId = enbHandler.getEutranCellId();" + NL + "" + NL + "            //TODO implement in next delivery" + NL + "            // DeactiveFeatureState();" + NL + "" + NL + "            backENBStatus();" + NL + "            configENB();" + NL + "" + NL + "            enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());" + NL + "" + NL + "            enbTestHelper.prepareStp();" + NL + "            " + NL + "        } catch (Exception te) {" + NL + "            te.printStackTrace();" + NL + "            fail(\"Execution Exception~!!!!!\");" + NL + "        } finally {" + NL + "            restoreENBStatus();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    private void initialize() {" + NL + "        setTestInfo(\"\");" + NL + "        setTestStep(\"\");" + NL + "" + NL + "        //Test line in Nanjing need setAuthenticationKey before attach" + NL + "        if(System.getProperty(\"testarea\").equalsIgnoreCase(\"nanjing\")){" + NL + "            LteRm.ue1.getNasModeBuilder().setAuthenticationKey(" + NL + "                    \"01234567890123456789012345678901\");" + NL + "        }" + NL + "    }" + NL + "    " + NL + "     /**" + NL + "     * TODO Deliver in next release" + NL + "     * Get the initial eNB configuration.<br/>" + NL + "     * @throws Exception" + NL + "     */" + NL + "    private void backENBStatus() throws Exception {" + NL + "        setTestStep(\"Get the configuration\");" + NL + "        setTestInfo(\"Backing up parameters so they can be restored later\");" + NL + "        String eutranName = isTDD ? \"EUtranCellTDD=\" : \"EUtranCellFDD=\";" + NL + "        enbOriginalConfig = EnbConfigHandler.getBuilder();" + NL + "        for(int cellId : eUtranCellId) {" + NL + "            int originBandwidth = enbHandler.getCellBandwidth(eutranName + cellId);" + NL + "            enbOriginalConfig.addAttribute(eutranName + cellId, \"bandwidth\", String.valueOf(originBandwidth));" + NL + "        }" + NL + "    }" + NL + "    " + NL + "     /**" + NL + "     * TODO Deliver in next release" + NL + "     * Configure the eNB with the parameters of feature.<br/>" + NL + "     * @throws Exception" + NL + "     */" + NL + "    @SuppressWarnings(\"unused\")" + NL + "    private void configENB() throws Exception {" + NL + "        setTestStep(\"start Config ENB\");" + NL + "        EnbConfigHandlerBuilder enbCfgHandlerBuilder = EnbConfigHandler.getBuilder();" + NL + "        for(int cellId : eUtranCellId) {" + NL + "            enbCfgHandlerBuilder.addSystemConstant(SysConstMap.get(\"CELLCAPRRCCONNSETUPREQ\"),String.valueOf(cellCapRrcConnSetupReq));" + NL + "        }" + NL + "        enbHandler.setConfig(enbCfgHandlerBuilder.build());" + NL + "    }" + NL + "    " + NL + "     /**" + NL + "     * TODO Deliver in next release" + NL + "     * Roll back the configuration of eNB.<br/>" + NL + "     * @throws Exception" + NL + "     */" + NL + "    private void restoreENBStatus() {" + NL + "        setTestStep(\"Clearup the ENB configuration\");" + NL + "        for(String key : SysConstMap.keySet()) {" + NL + "             enbHandler.resetSystemConstant(SysConstMap.get(key));" + NL + "        }" + NL + "        try {" + NL + "            enbHandler.setNodeConfig(enbOriginalConfig.build());" + NL + "        } catch (Exception e) {" + NL + "            e.printStackTrace();" + NL + "        }" + NL + "    }" + NL + "}" + NL + NL + NL;
+  protected final String TEXT_10 = NL;
 
   public String generate(Object argument)
   {
     final StringBuffer stringBuffer = new StringBuffer();
-    stringBuffer.append(TEXT_1);
     
 	JcatTCGenArgs args = (JcatTCGenArgs)argument;
     String pkgName = args.getPkgName();
     String className = args.getClassName(); 
 
-    stringBuffer.append(TEXT_2);
+    stringBuffer.append(TEXT_1);
     stringBuffer.append(pkgName);
+    stringBuffer.append(TEXT_2);
+    stringBuffer.append(className);
     stringBuffer.append(TEXT_3);
     stringBuffer.append(className);
     stringBuffer.append(TEXT_4);
@@ -44,13 +44,10 @@ public class JcatTCModuleGen
     stringBuffer.append(TEXT_6);
     stringBuffer.append(className);
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(className);
     stringBuffer.append(TEXT_8);
     stringBuffer.append(className);
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(className);
     stringBuffer.append(TEXT_10);
-    stringBuffer.append(TEXT_11);
     return stringBuffer.toString();
   }
 }

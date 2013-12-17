@@ -147,21 +147,35 @@ public class ThroughputAction implements IObjectActionDelegate {
 			IField[] fields = iType.getFields();
 			if (fields.length > 0) {
 				for (IField field : fields) {
-					if (field.toString().indexOf("int") != -1) {
+					if (field.toString().indexOf("UeNasMode") != -1) {
 						// System.out.println("YES++++++++++++++++++++++++++++++++++++++++++++++++YES");
-						autoInputFieldContent = "\n";
+						autoInputFieldContent ="\n    private EnbConfigHandlerBuilder enbOriginalConfig;"
+								+ "\n    private void doMultiUeThroughput(){"
+								+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
+								+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
+								+ "\n        enbTestHelper.attachUes();"
+								+ "\n        enbTestHelper.startUserData(Protocol.UDP, Direction.BIDIRECTIONAL, duration);"
+								+ "\n        enbTestHelper.analyzeIperfDataWhenFinished(duration, Protocol.UDP, Direction.BIDIRECTIONAL);"
+								+ "\n        enbTestHelper.detachUes();"
+								+ "\n    }";
 						// MessageDialog.openInformation(shell,"Extend","Field is exiting!");
 					} else {
-						autoInputFieldContent = "\nprivate int i;\npublic void dosomething(){}";
+						autoInputFieldContent = "\n    private UeNasMode ueNasMode;"
+								+ "\n    private EnbHandler enbHandler;"
+								+ "\n    private EnbTestHelper enbTestHelper;"
+								+ "\n    private void doMultiUeThroughput(){"
+								+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
+								+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
+								+ "\n        enbTestHelper.attachUes();"
+								+ "\n        enbTestHelper.startUserData(Protocol.UDP, Direction.BIDIRECTIONAL, duration);"
+								+ "\n        enbTestHelper.analyzeIperfDataWhenFinished(duration, Protocol.UDP, Direction.BIDIRECTIONAL);"
+								+ "\n        enbTestHelper.detachUes();"
+								+ "\n    }";
 						// MessageDialog.openInformation(shell,"Extend","Field has been created!");
 					}
 				}
 			} else {
-				autoInputFieldContent = "\n    private UeNasMode ueNasMode;"
-						+ "\n    private EnbHandler enbHandler;"
-						+ "\n    private EnbTestHelper enbTestHelper;"
-						+ "\n    private EnbConfigHandlerBuilder enbOriginalConfig;"
-						+ "\n    private void doMultiUeThroughput(){"
+				autoInputFieldContent = "\n    private void doMultiUeThroughput(){"
 						+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
 						+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
 						+ "\n        enbTestHelper.attachUes();"

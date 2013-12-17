@@ -3,71 +3,116 @@
    class="JcatTCBuilderGen"
    imports=""
 %>
-
 <%
 	JcatTCGenArgs args = (JcatTCGenArgs)argument;
     String pkgName = args.getPkgName();
     String className = args.getClassName(); 
+    String moduleName=args.getModuleName();
 %>
-
 package <%=pkgName%>;
+
+import com.ericsson.msr.handlers.enums.Direction;
+import com.ericsson.msr.handlers.enums.Protocol;
 
 /**
 *   
-* @name <%=className%>TestModuleBuilder
+* @name <%=className%>
 *       
 * @author 
 *       
 * @created 
 *       
-* @description   A builder class for {@link <%=className%>TestModule}. The setter methods can
+* @description   A builder class for {@link <%=moduleName%>}. The setter methods can
 *               optionally be used to configure the test module. Call build to get an instance of
-*               {@link <%=className%>TestModule}.
+*               {@link <%=moduleName%>}.
 *       
-* @revision  first version 
+* @revision   
 *  
 */
 
 public class <%=className%>
 {
-    protected String param;
+    private String testId = null;
+    private String description = null;
+    private Protocol protocol;
+    private Direction direction;
 
     /**
-     * The constructor for this builder, should only be used by {@link <%=className%>TestModule} 
+     * The constructor for this builder, should only be used by {@link <%=className%>} 
      * 
      */
-    protected <%=className%>TestModuleBuilder()
-    {
-    }
+    protected <%=className%>(){}
     
-    /**
-     * Sets the attribute moLdn (Mandatory attribute)
-     * 
-     * @param param
-     * @return This builder
+     /**
+     * @param testId
+     *            Any string that is a unique identifier for the test
+     * @return
      */
-    public <%=className%>setParam(String param)
-    {
-        this.param = param;
+    public <%=className%> setTestId(String testId) {
+        if (testId == null)
+            throw new NullPointerException(errorMessage("testId"));
+        this.testId = testId;
         return this;
     }
-    
-    /**
-     * Verifies that the mandatory attributes are set.
-     * Builds a <%=className%>TestModule using the values set by the setter methods.
-     *    
-     * @return a <%=className%>TestModule
-     */
-    public <%=className%>TestModule build() 
-    {
-        // Verify that mandatory attributes has a value set.
 
-        if(param == null)
-        {
-            String msg = "You must set a value to the mandatory attribute \"param\"."; 
-            throw new NullPointerException(msg);
-        }
-        
-        return new <%=className%>TestModule(this);
+    public String getTestId(){
+        return testId;
     }
+    
+     /**
+     * @param description
+     *            Any string that is a description for the test
+     * @return
+     */
+    public <%=className%> setDescription(String description) {
+        if(description == null) throw new NullPointerException(errorMessage("description"));
+        this.description = description;
+        return this;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    private String errorMessage(String argName) {
+        return String.format("Null argument or error argument: '%s'", argName);
+    }
+
+    /**
+     * Sets PM_Even_testmodulebuilder parameter 'protocol' to the current protocol
+     * @param protocol
+     *            specify the kind of user data traffic
+     * @throws NullPointerException with argument "protocol" if input parameter is null
+     * @return object
+     */
+     public <%=className%> setProtocol(Protocol protocol) {
+         if(protocol == null) throw new NullPointerException(errorMessage("protocol"));
+         this.protocol = protocol;
+         return this;
+     }
+
+     public Protocol getProtocol(){
+         return protocol;
+     }
+
+     /**
+     * Sets PM_Even_testmodulebuilder parameter 'direction' to the current direction
+     * @param direction
+     *            the direction for userdata
+     * @throws NullPointerException with argument "direction" if input parameter is null
+     * @return object
+     */
+     public <%=className%> setDirection(Direction direction) {
+         if(direction == null) throw new NullPointerException(errorMessage("direction"));
+         this.direction = direction;
+         return this;
+     }
+
+     public Direction getDirection(){
+        return direction;
+     }
+     
+     public <%=moduleName%> build(){
+        return new <%=moduleName%>(this);
+     }
 }
