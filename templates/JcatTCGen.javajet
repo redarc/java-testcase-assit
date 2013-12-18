@@ -38,7 +38,7 @@ import com.ericsson.msr.*;
 public class <%=className%> extends TestBase
 {
     public <%=className%>(){
-	setTestInfo("Constructor of <%=className%>");
+	    setTestInfo("Constructor of <%=className%>");
 	}
 	
 	@Setup
