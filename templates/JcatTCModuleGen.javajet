@@ -51,6 +51,7 @@ public class <%=className%> extends TestBase{
     
     private String testId = null;
     private String description = null;
+    private int duration = 0;
     private String servingEUtranCell = null;
     private int ue_TotalNumber = 1;
     private int ue_TputNumber = 1;
@@ -74,6 +75,7 @@ public class <%=className%> extends TestBase{
         <%=className%>Builder builder) {
         testId = builder.getTestId();
         description = builder.getDescription();
+        duration = builder.getDuration();
         servingEUtranCell = builder.getServingEUtranCell();
         ue_TotalNumber = builder.getTotalNumOfUes();
         ue_TputNumber = builder.getTputNumOfUes();

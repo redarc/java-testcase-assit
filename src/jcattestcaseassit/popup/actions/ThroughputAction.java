@@ -145,36 +145,37 @@ public class ThroughputAction implements IObjectActionDelegate {
 			iType = workingCopy.getTypes()[0];
 
 			IField[] fields = iType.getFields();
-			if (fields.length > 0) {
-				for (IField field : fields) {
-					if (field.toString().indexOf("UeNasMode") != -1) {
-						// System.out.println("YES++++++++++++++++++++++++++++++++++++++++++++++++YES");
-						autoInputFieldContent ="\n    private EnbConfigHandlerBuilder enbOriginalConfig;"
-								+ "\n    private void doMultiUeThroughput(){"
-								+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
-								+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
-								+ "\n        enbTestHelper.attachUes();"
-								+ "\n        enbTestHelper.startUserData(Protocol.UDP, Direction.BIDIRECTIONAL, duration);"
-								+ "\n        enbTestHelper.analyzeIperfDataWhenFinished(duration, Protocol.UDP, Direction.BIDIRECTIONAL);"
-								+ "\n        enbTestHelper.detachUes();"
-								+ "\n    }";
-						// MessageDialog.openInformation(shell,"Extend","Field is exiting!");
-					} else {
-						autoInputFieldContent = "\n    private UeNasMode ueNasMode;"
-								+ "\n    private EnbHandler enbHandler;"
-								+ "\n    private EnbTestHelper enbTestHelper;"
-								+ "\n    private void doMultiUeThroughput(){"
-								+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
-								+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
-								+ "\n        enbTestHelper.attachUes();"
-								+ "\n        enbTestHelper.startUserData(Protocol.UDP, Direction.BIDIRECTIONAL, duration);"
-								+ "\n        enbTestHelper.analyzeIperfDataWhenFinished(duration, Protocol.UDP, Direction.BIDIRECTIONAL);"
-								+ "\n        enbTestHelper.detachUes();"
-								+ "\n    }";
-						// MessageDialog.openInformation(shell,"Extend","Field has been created!");
-					}
-				}
-			} else {
+			IMethod[] methods = iType.getMethods();
+			if (fields.length > 0 && methods.length >0) {
+//				for (IField field : fields) {
+//					if (field.toString().indexOf("UeNasMode") != -1) {
+//						// System.out.println("YES++++++++++++++++++++++++++++++++++++++++++++++++YES");
+//						autoInputFieldContent ="\n    private EnbConfigHandlerBuilder enbOriginalConfig;"
+//								+ "\n    private void doMultiUeThroughput(){"
+//								+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
+//								+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
+//								+ "\n        enbTestHelper.attachUes();"
+//								+ "\n        enbTestHelper.startUserData(Protocol.UDP, Direction.BIDIRECTIONAL, duration);"
+//								+ "\n        enbTestHelper.analyzeIperfDataWhenFinished(duration, Protocol.UDP, Direction.BIDIRECTIONAL);"
+//								+ "\n        enbTestHelper.detachUes();"
+//								+ "\n    }";
+//						// MessageDialog.openInformation(shell,"Extend","Field is exiting!");
+//					} else {
+//						autoInputFieldContent = "\n    private UeNasMode ueNasMode;"
+//								+ "\n    private EnbHandler enbHandler;"
+//								+ "\n    private EnbTestHelper enbTestHelper;"
+//								+ "\n    private void doMultiUeThroughput(){"
+//								+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
+//								+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
+//								+ "\n        enbTestHelper.attachUes();"
+//								+ "\n        enbTestHelper.startUserData(Protocol.UDP, Direction.BIDIRECTIONAL, duration);"
+//								+ "\n        enbTestHelper.analyzeIperfDataWhenFinished(duration, Protocol.UDP, Direction.BIDIRECTIONAL);"
+//								+ "\n        enbTestHelper.detachUes();"
+//								+ "\n    }";
+//						// MessageDialog.openInformation(shell,"Extend","Field has been created!");
+//					}
+//				}
+//			} else {
 				autoInputFieldContent = "\n    private void doMultiUeThroughput(){"
 						+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
 						+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
@@ -185,30 +186,30 @@ public class ThroughputAction implements IObjectActionDelegate {
 						+ "\n    }";
 			}
 
-			IMethod[] methods = iType.getMethods();
-			if (methods.length > 0) {
-				for (IMethod method : methods) {
-					if (iType.getMethods() != null) {
-						if (method.getElementName().indexOf(
-								iType.getElementName()) != -1) {
-							autoInputMethodContent = "\n";
-							break;
-						} else {
-							autoInputMethodContent = "\n"
-									+ iType.getElementName() + "(){\nint i=1}";
-						}
-					}
-				}
-			} else {
-				autoInputMethodContent = "\n    "
-						+ iType.getElementName()
-						+ "(){"
-						+ "\n        ueNasMode = UeNasModeBuilders.fromCategoryNumber(LteRm.ue1,UeCategory.CAT4,ue_TotalNumber,Integer.parseInt(servingEUtranCell));"
-						+ "\n        enbHandler = EnbHandler.getInstance(LteRm.enb1);"
-						+ "\n        enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());"
-						+ "\n        enbOriginalConfig = EnbConfigHandler.getBuilder();"
-						+ "\n    }";
-			}
+//			IMethod[] methods = iType.getMethods();
+//			if (methods.length > 0) {
+//				for (IMethod method : methods) {
+//					if (iType.getMethods() != null) {
+//						if (method.getElementName().indexOf(
+//								iType.getElementName()) != -1) {
+//							autoInputMethodContent = "\n";
+//							break;
+//						} else {
+//							autoInputMethodContent = "\n"
+//									+ iType.getElementName() + "(){\nint i=1}";
+//						}
+//					}
+//				}
+//			} else {
+//				autoInputMethodContent = "\n    "
+//						+ iType.getElementName()
+//						+ "(){"
+//						+ "\n        ueNasMode = UeNasModeBuilders.fromCategoryNumber(LteRm.ue1,UeCategory.CAT4,ue_TotalNumber,Integer.parseInt(servingEUtranCell));"
+//						+ "\n        enbHandler = EnbHandler.getInstance(LteRm.enb1);"
+//						+ "\n        enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());"
+//						+ "\n        enbOriginalConfig = EnbConfigHandler.getBuilder();"
+//						+ "\n    }";
+//			}
 			// if (methods.length>0) {
 			// for (IMethod method : methods) {
 			// if (iType.getMethods() != null) {
@@ -229,8 +230,7 @@ public class ThroughputAction implements IObjectActionDelegate {
 			// }else {autoInputMethodContent = "\n" + iType.getElementName()+
 			// "(){\nint i=1;}";}
 
-			newContent = headContent + autoInputFieldContent
-					+ autoInputMethodContent + tailContent;
+			newContent = headContent + autoInputFieldContent + tailContent;
 			buffer.setContents(newContent);
 
 			// buffer.replace(0, newContent.length(), newContent);

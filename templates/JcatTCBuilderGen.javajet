@@ -34,6 +34,7 @@ public class <%=className%>
 {
     private String testId = null;
     private String description = null;
+    private int duration = 0;
     private Protocol protocol;
     private Direction direction;
     
@@ -43,6 +44,8 @@ public class <%=className%>
 
     private final int MAX_AEROFLEX_UE_NUM = 128;
     private final int MAX_EUTRANCELL_NUM = 12;
+    
+    private final int MAX_CELLCAPMAXTIMETHRESHOLD = 3000;
 
     /**
      * The constructor for this builder, should only be used by {@link <%=className%>} 
@@ -83,6 +86,26 @@ public class <%=className%>
 
     private String errorMessage(String argName) {
         return String.format("Null argument or error argument: '%s'", argName);
+    }
+    
+     /**
+     * Must called after setCellCapMaxTimeThreshold()
+     * @param duration
+     *           Throughput duration
+     * @return
+     */
+    public <%=className%> setDuration(int duration) {
+        if(duration <= 0 || duration > MAX_CELLCAPMAXTIMETHRESHOLD) {
+            String errorMessage = String.format("duartion can not be smaller than 0");
+            throw new IllegalArgumentException(errorMessage);
+        }
+        this.duration = duration;
+        return this;
+    }
+
+    public int getDuration()
+    {
+        return duration;
     }
 
     /**

@@ -159,53 +159,43 @@ public class AttachAction implements IObjectActionDelegate {
 			iType = workingCopy.getTypes()[0];
 
 			IField[] fields = iType.getFields();
-			if (fields.length > 0) {
-				for (IField field : fields) {
-					if (field.toString().indexOf("Error") != -1) {
-						// System.out.println("YES++++++++++++++++++++++++++++++++++++++++++++++++YES");
-						autoInputFieldContent = "\n";
-						// MessageDialog.openInformation(shell,"Extend","Field is exiting!");
-					} else {
-						autoInputFieldContent = "\n";
-						// MessageDialog.openInformation(shell,"Extend","Field has been created!");
-					}
-				}
-			} else {
-				autoInputFieldContent = "\n    private UeNasMode ueNasMode;"
-						+ "\n    private EnbHandler enbHandler;"
-						+ "\n    private EnbTestHelper enbTestHelper;"
-						+ "\n    private EnbConfigHandlerBuilder enbOriginalConfig;";
-			}
+//			if (fields.length > 0) {
+//				for (IField field : fields) {
+//					if (field.toString().indexOf("Error") != -1) {
+//						// System.out.println("YES++++++++++++++++++++++++++++++++++++++++++++++++YES");
+//						autoInputFieldContent = "\n";
+//						// MessageDialog.openInformation(shell,"Extend","Field is exiting!");
+//					} else {
+//						autoInputFieldContent = "\n";
+//						// MessageDialog.openInformation(shell,"Extend","Field has been created!");
+//					}
+//				}
+//			} else {
+//				autoInputFieldContent ="";
+//			}
 
 			IMethod[] methods = iType.getMethods();
-			if (methods.length > 0) {
-				for (IMethod method : methods) {
-					if (iType.getMethods() != null) {
-						if (method.getElementName().indexOf(
-								iType.getElementName()) != -1) {
-							autoInputMethodContent = "\n";
-							break;
-						} else {
-							autoInputMethodContent = "\n"
-									+ iType.getElementName() + "(){\n}";
-						}
-					}
-				}
-			} else {
-				autoInputMethodContent = "\n    "
-						+ iType.getElementName()
-						+ "(){"
-						+ "\n        ueNasMode = UeNasModeBuilders.fromCategoryNumber(LteRm.ue1,UeCategory.CAT4,ue_TotalNumber,Integer.parseInt(servingEUtranCell));"
-						+ "\n        enbHandler = EnbHandler.getInstance(LteRm.enb1);"
-						+ "\n        enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());"
-						+ "\n        enbOriginalConfig = EnbConfigHandler.getBuilder();"
-						+ "\n    }"
-						+ "\n    private void doAttachDetach(){"
-						+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
-						+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
-						+ "\n        enbTestHelper.attachUes();"
-						+ "\n        enbTestHelper.detachUes();" 
-						+ "\n    }";
+			if (methods.length > 0 && fields.length > 0) {
+//				for (IMethod method : methods) {
+//					if (iType.getMethods() != null) {
+//						if (method.getElementName().indexOf(
+//								iType.getElementName()) != -1) {
+//							autoInputMethodContent = "\n";
+//							break;
+//						} else {
+//							autoInputMethodContent = "\n"
+//									+ iType.getElementName() + "(){\n}";
+//						}
+//					}
+//				}
+//			} else {
+				autoInputMethodContent ="\n    private void doAttachDetach(){"
+						              + "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
+						              + "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
+						              + "\n        enbTestHelper.attachUes();"
+						              + "\n        enbTestHelper.detachUes();"
+						              + "\n        ueNasMode.terminateAll();"
+						              + "\n    }";
 			}
 			// if (methods.length>0) {
 			// for (IMethod method : methods) {
@@ -227,8 +217,7 @@ public class AttachAction implements IObjectActionDelegate {
 			// }else {autoInputMethodContent = "\n" + iType.getElementName()+
 			// "(){\nint i=1;}";}
 
-			newContent = headContent + autoInputFieldContent
-					+ autoInputMethodContent + tailContent;
+			newContent = headContent+ autoInputMethodContent + tailContent;
 			buffer.setContents(newContent);
 
 			// buffer.replace(0, newContent.length(), newContent);
