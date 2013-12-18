@@ -1,0 +1,17 @@
+<%@ jet 
+   package="jcat.testcase.gen" 
+   class="JcatTestNGGen"
+   imports=""
+%>
+main_enb1 enb nj njenb125
+main_ue1  ue aeroflex_nj_10
+main_pgw cpg nj cpg1
+main_portbase 0
+main_numofues 1 
+main_isp1 isp nj njisp213-2-33
+physical_cell_id=76
+duplex_mode=tdd
+af_mode=combined
+radio_card=RC1
+Campaign_portbase 0
+Campaign_view ate_default_atelte
