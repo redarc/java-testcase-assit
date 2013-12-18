@@ -144,15 +144,7 @@ public class AttachAction implements IObjectActionDelegate {
 			// break;
 			// }
 
-			String headContent =  "import org.testng.annotations.Parameters;"
-					+ "\nimport org.testng.annotations.Test;"
-					+ "\nimport se.ericsson.jcat.fw.annotations.Setup;"
-					+ "\nimport se.ericsson.jcat.fw.annotations.Teardown;"
-					+ "\nimport com.ericsson.ate.lte_ran_iov.testsupport.other.LteRm;"
-					+ "\nimport com.ericsson.msr.prepostchecker.EnbPrePostCheckOptions;"
-					+ "\nimport com.ericsson.msr.prepostchecker.EnbPrePostChecker;"
-					+ "\nimport com.ericsson.tac.jcat.TestBase;\n"
-					+content.substring(0, offset);
+			String headContent = content.substring(0, offset);
 			String tailContent = content.substring(offset, content.length());
 			//
 			// String newContent = headContent + "public void dosomething(){}" +

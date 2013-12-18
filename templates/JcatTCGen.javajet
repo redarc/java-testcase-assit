@@ -32,7 +32,7 @@ import com.ericsson.msr.*;
 * @description  This test uses the {@link <%=className%>ModuleBuilder} to configure and build a
 *       {@link <%=className%>Module}. Then the test modules execute(test) method is executed.
 *
-* @precondition Requires the hardware described in {@link <%=className%>TestModule}
+* @precondition Requires the hardware described in {@link <%=className%>Module}
 */
 
 public class <%=className%> extends TestBase
@@ -55,14 +55,23 @@ public class <%=className%> extends TestBase
      * Tests <%=className%> using {@link <%=className%>Module}.
      *
      * @param testId                         - The test "ID", use the CTC if available.<br>
+     * @param description                    - The description of test.<br>
+     * @param duration                       - The time of test would be executed
+     * @param ue_TotalNumber                 - Sets the total number of UEs would be used.<br>
+     * @param ue_TputNumber                  - Sets number of UEs would be used for doing Throughput.<br>
+     * @param servingEUtranCell              - Sets which cell of eNoteB would be used.<br>
      */
      
-    @Parameters({"testid"})
+    @Parameters({"testid","description", "duration", "ue_TotalNumber", "ue_TputNumber","servingEUtranCell"})
     
     @Test
-    public void test (String testId) throws Exception {
+    public void test (String testId,String description, int duration,int ue_TotalNumber, int ue_TputNumber, String servingEUtranCell) throws Exception {
         <%=className%>Module testModule = <%=className%>Module.newBuilder()
             .setTestId(testId)
+            .setDescription(description)
+            .setTotalNumOfUes(ue_TotalNumber)
+            .setTputNumOfUes(ue_TputNumber)
+            .setNumOfCells(servingEUtranCell)
             .build(); //Build a new instance of the test module.
         testModule.execute();
     }

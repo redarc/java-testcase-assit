@@ -21,6 +21,7 @@ import com.ericsson.ate.lte_ran_iov.testsupport.tool.uetools.ueinterfaces.UeNasM
 import com.ericsson.msr.handlers.*;
 import com.ericsson.msr.testhelpers.EnbTestHelper;
 import com.ericsson.tac.jcat.TestBase;
+import com.ericsson.msr.handlers.enums.UeCategory;
 /**
  *   
  * @name <%=className%>
@@ -46,6 +47,9 @@ public class <%=className%> extends TestBase{
     
     private String testId = null;
     private String description = null;
+    private String servingEUtranCell = null;
+    private int ue_TotalNumber = 1;
+    private int ue_TputNumber = 1;
     
     // Cell parameters
     private int cellCapRrcConnSetupReq = 0;
@@ -53,6 +57,7 @@ public class <%=className%> extends TestBase{
     private int[] eUtranCellId;
     private boolean isTDD = false;
     
+    private UeNasMode ueNasMode;
     private EnbHandler enbHandler;
     private EnbTestHelper enbTestHelper;
     private EnbConfigHandlerBuilder enbOriginalConfig;
@@ -65,6 +70,14 @@ public class <%=className%> extends TestBase{
         <%=className%>Builder builder) {
         testId = builder.getTestId();
         description = builder.getDescription();
+        servingEUtranCell = builder.getServingEUtranCell();
+        ue_TotalNumber = builder.getTotalNumOfUes();
+        ue_TputNumber = builder.getTputNumOfUes();
+        
+        ueNasMode = UeNasModeBuilders.fromCategoryNumber(LteRm.ue1,UeCategory.CAT4,ue_TotalNumber,Integer.parseInt(servingEUtranCell));
+        enbHandler = EnbHandler.getInstance(LteRm.enb1);
+        enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());
+        enbOriginalConfig = EnbConfigHandler.getBuilder();
     }
     
     public void execute() {
@@ -73,7 +86,6 @@ public class <%=className%> extends TestBase{
             // Initial basic parameters.
             initialize();
 
-            enbHandler = EnbHandler.getInstance(LteRm.enb1);
             eUtranCellId = enbHandler.getEutranCellId();
 
             //TODO implement in next delivery
@@ -81,8 +93,6 @@ public class <%=className%> extends TestBase{
 
             backENBStatus();
             configENB();
-
-            enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());
 
             enbTestHelper.prepareStp();
             
