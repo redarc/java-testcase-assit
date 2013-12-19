@@ -17,7 +17,6 @@ import com.ericsson.ate.*;
 import com.ericsson.msr.*;
 
 /**
-* @id  <%=className%>
 *
 * @name <%=className%>
 *
@@ -55,22 +54,15 @@ public class <%=className%> extends TestBase
      * Tests <%=className%> using {@link <%=className%>Module}.
      *
      * @param testId                         - The test "ID", use the CTC if available.<br>
-     * @param description                    - The description of test.<br>
-     * @param duration                       - The time of test would be executed
-     * @param ue_TotalNumber                 - Sets the total number of UEs would be used.<br>
-     * @param ue_TputNumber                  - Sets number of UEs would be used for doing Throughput.<br>
      * @param servingEUtranCell              - Sets which cell of eNoteB would be used.<br>
      */
      
-    @Parameters({"testid","description", "duration", "ue_TotalNumber", "ue_TputNumber","servingEUtranCell"})
+    @Parameters({"testId","servingEUtranCell"})
     
     @Test
-    public void test (String testId,String description, int duration,int ue_TotalNumber, int ue_TputNumber, String servingEUtranCell) throws Exception {
+    public void test(String testId, String servingEUtranCell) throws Exception {
         <%=className%>Module testModule = <%=className%>Module.newBuilder()
             .setTestId(testId)
-            .setDescription(description)
-            .setTotalNumOfUes(ue_TotalNumber)
-            .setTputNumOfUes(ue_TputNumber)
             .setNumOfCells(servingEUtranCell)
             .build(); //Build a new instance of the test module.
         testModule.execute();

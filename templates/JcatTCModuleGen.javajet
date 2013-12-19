@@ -41,26 +41,12 @@ import com.ericsson.tac.jcat.TestBase;
  */
 
 public class <%=className%> extends TestBase{
-
-    @SuppressWarnings("serial")
-    private final HashMap<String, String> SysConstMap = new HashMap<String, String>(){
-        {
-        put("", "");
-        }
-    };
     
     private String testId = null;
-    private String description = null;
-    private int duration = 0;
     private String servingEUtranCell = null;
+    private int duration = 30;//duration default value 30s
     private int ue_TotalNumber = 1;
     private int ue_TputNumber = 1;
-    
-    // Cell parameters
-    private int cellCapRrcConnSetupReq = 0;
-    
-    private int[] eUtranCellId;
-    private boolean isTDD = false;
     
     private UeNasMode ueNasMode;
     private EnbHandler enbHandler;
@@ -74,33 +60,15 @@ public class <%=className%> extends TestBase{
     protected <%=className%>(
         <%=className%>Builder builder) {
         testId = builder.getTestId();
-        description = builder.getDescription();
-        duration = builder.getDuration();
         servingEUtranCell = builder.getServingEUtranCell();
-        ue_TotalNumber = builder.getTotalNumOfUes();
-        ue_TputNumber = builder.getTputNumOfUes();
-        
-        ueNasMode = UeNasModeBuilders.fromCategoryNumber(LteRm.ue1,UeCategory.CAT4,ue_TotalNumber,Integer.parseInt(servingEUtranCell));
-        enbHandler = EnbHandler.getInstance(LteRm.enb1);
-        enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());
-        enbOriginalConfig = EnbConfigHandler.getBuilder();
     }
     
     public void execute() {
-        this.setTestcase(testId, description);
         try {
-            // Initial basic parameters.
-            initialize();
-
-            eUtranCellId = enbHandler.getEutranCellId();
-
-            //TODO implement in next delivery
-            // DeactiveFeatureState();
-
-            backENBStatus();
-            configENB();
-
-            enbTestHelper.prepareStp();
+            ueNasMode = UeNasModeBuilders.fromCategoryNumber(LteRm.ue1,UeCategory.CAT4,ue_TotalNumber,Integer.parseInt(servingEUtranCell));
+            enbHandler = EnbHandler.getInstance(LteRm.enb1);
+            enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());        
+            //TODO write your test code here
             
         } catch (Exception te) {
             te.printStackTrace();
@@ -110,48 +78,6 @@ public class <%=className%> extends TestBase{
         }
     }
     
-    private void initialize() {
-        setTestInfo("");
-        setTestStep("");
-
-        //Test line in Nanjing need setAuthenticationKey before attach
-        if(System.getProperty("testarea").equalsIgnoreCase("nanjing")){
-            LteRm.ue1.getNasModeBuilder().setAuthenticationKey(
-                    "01234567890123456789012345678901");
-        }
-    }
-    
-     /**
-     * TODO Deliver in next release
-     * Get the initial eNB configuration.<br/>
-     * @throws Exception
-     */
-    private void backENBStatus() throws Exception {
-        setTestStep("Get the configuration");
-        setTestInfo("Backing up parameters so they can be restored later");
-        String eutranName = isTDD ? "EUtranCellTDD=" : "EUtranCellFDD=";
-        enbOriginalConfig = EnbConfigHandler.getBuilder();
-        for(int cellId : eUtranCellId) {
-            int originBandwidth = enbHandler.getCellBandwidth(eutranName + cellId);
-            enbOriginalConfig.addAttribute(eutranName + cellId, "bandwidth", String.valueOf(originBandwidth));
-        }
-    }
-    
-     /**
-     * TODO Deliver in next release
-     * Configure the eNB with the parameters of feature.<br/>
-     * @throws Exception
-     */
-    @SuppressWarnings("unused")
-    private void configENB() throws Exception {
-        setTestStep("start Config ENB");
-        EnbConfigHandlerBuilder enbCfgHandlerBuilder = EnbConfigHandler.getBuilder();
-        for(int cellId : eUtranCellId) {
-            enbCfgHandlerBuilder.addSystemConstant(SysConstMap.get("CELLCAPRRCCONNSETUPREQ"),String.valueOf(cellCapRrcConnSetupReq));
-        }
-        enbHandler.setConfig(enbCfgHandlerBuilder.build());
-    }
-    
      /**
      * TODO Deliver in next release
      * Roll back the configuration of eNB.<br/>
@@ -159,14 +85,8 @@ public class <%=className%> extends TestBase{
      */
     private void restoreENBStatus() {
         setTestStep("Clearup the ENB configuration");
-        for(String key : SysConstMap.keySet()) {
-             enbHandler.resetSystemConstant(SysConstMap.get(key));
-        }
-        try {
-            enbHandler.setNodeConfig(enbOriginalConfig.build());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //TODO write your restore ENB status code here
+        
     }
 }
 

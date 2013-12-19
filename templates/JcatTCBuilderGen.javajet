@@ -11,9 +11,6 @@
 %>
 package <%=pkgName%>;
 
-import com.ericsson.msr.handlers.enums.Direction;
-import com.ericsson.msr.handlers.enums.Protocol;
-
 /**
 *   
 * @name <%=className%>
@@ -33,19 +30,7 @@ import com.ericsson.msr.handlers.enums.Protocol;
 public class <%=className%>
 {
     private String testId = null;
-    private String description = null;
-    private int duration = 0;
-    private Protocol protocol;
-    private Direction direction;
-    
-    private int ue_TotalNumber = 1;
-    private int ue_TputNumber = 1;
     private String servingEUtranCell = null;
-
-    private final int MAX_AEROFLEX_UE_NUM = 128;
-    private final int MAX_EUTRANCELL_NUM = 12;
-    
-    private final int MAX_CELLCAPMAXTIMETHRESHOLD = 3000;
 
     /**
      * The constructor for this builder, should only be used by {@link <%=className%>} 
@@ -68,119 +53,6 @@ public class <%=className%>
     public String getTestId(){
         return testId;
     }
-    
-     /**
-     * @param description
-     *            Any string that is a description for the test
-     * @return
-     */
-    public <%=className%> setDescription(String description) {
-        if(description == null) throw new NullPointerException(errorMessage("description"));
-        this.description = description;
-        return this;
-    }
-
-    public String getDescription(){
-        return description;
-    }
-
-    private String errorMessage(String argName) {
-        return String.format("Null argument or error argument: '%s'", argName);
-    }
-    
-     /**
-     * Must called after setCellCapMaxTimeThreshold()
-     * @param duration
-     *           Throughput duration
-     * @return
-     */
-    public <%=className%> setDuration(int duration) {
-        if(duration <= 0 || duration > MAX_CELLCAPMAXTIMETHRESHOLD) {
-            String errorMessage = String.format("duartion can not be smaller than 0");
-            throw new IllegalArgumentException(errorMessage);
-        }
-        this.duration = duration;
-        return this;
-    }
-
-    public int getDuration()
-    {
-        return duration;
-    }
-
-    /**
-     * Sets PM_Even_testmodulebuilder parameter 'protocol' to the current protocol
-     * @param protocol
-     *            specify the kind of user data traffic
-     * @throws NullPointerException with argument "protocol" if input parameter is null
-     * @return object
-     */
-     public <%=className%> setProtocol(Protocol protocol) {
-         if(protocol == null) throw new NullPointerException(errorMessage("protocol"));
-         this.protocol = protocol;
-         return this;
-     }
-
-     public Protocol getProtocol(){
-         return protocol;
-     }
-
-     /**
-     * Sets PM_Even_testmodulebuilder parameter 'direction' to the current direction
-     * @param direction
-     *            the direction for userdata
-     * @throws NullPointerException with argument "direction" if input parameter is null
-     * @return object
-     */
-     public <%=className%> setDirection(Direction direction) {
-         if(direction == null) throw new NullPointerException(errorMessage("direction"));
-         this.direction = direction;
-         return this;
-     }
-
-     public Direction getDirection(){
-        return direction;
-     }
-     
-      /**
-      * Must called before setTputNumOfUes()
-      * @param ue_TotalNumber
-      *            Total number of UEs used
-      * @return
-      */
-     public <%=className%> setTotalNumOfUes(int ue_TotalNumber) {
-         if(ue_TotalNumber < 0 || ue_TotalNumber > MAX_AEROFLEX_UE_NUM) {
-             String errorMessage = String.format("numOfUes can not be negative: '%s'", ue_TotalNumber);
-             throw new IllegalArgumentException(errorMessage);
-         }
-         this.ue_TotalNumber = ue_TotalNumber;
-         return this;
-     }
-
-     public int getTotalNumOfUes()
-     {
-         return ue_TotalNumber;
-     }
-
-     /**
-      * Must called after setTotalNumOfUes()
-      * @param ue_TputNumber
-      *            number of UEs used for Tput
-      * @return
-      */
-     public <%=className%> setTputNumOfUes(int ue_TputNumber) {
-         if(ue_TputNumber <= 0 || ue_TputNumber > ue_TotalNumber) {
-             String errorMessage = String.format("numOfUes can not be negative: '%s'", ue_TputNumber);
-             throw new IllegalArgumentException(errorMessage);
-         }
-         this.ue_TputNumber = ue_TputNumber;
-         return this;
-     }
-
-     public int getTputNumOfUes()
-     {
-         return ue_TputNumber;
-     }
 
      /**
       * @param servingEUtranCell
@@ -188,7 +60,7 @@ public class <%=className%>
       * @return
       */
      public <%=className%> setNumOfCells(String servingEUtranCell) {
-         if(Integer.parseInt(servingEUtranCell) <= 0 || Integer.parseInt(servingEUtranCell) > MAX_EUTRANCELL_NUM) {
+         if(Integer.parseInt(servingEUtranCell) <= 0 ) {
              String errorMessage = String.format("servingEUtranCell ID can not be smaller than 0");
              throw new IllegalArgumentException(errorMessage);
          }
@@ -199,6 +71,10 @@ public class <%=className%>
      public String getServingEUtranCell()
      {
          return servingEUtranCell;
+     }
+     
+     private String errorMessage(String argName) {
+        return String.format("Null argument or error argument: '%s'", argName);
      }
      
      public <%=moduleName%> build(){

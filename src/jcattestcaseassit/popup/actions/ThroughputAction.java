@@ -146,7 +146,7 @@ public class ThroughputAction implements IObjectActionDelegate {
 
 			IField[] fields = iType.getFields();
 			IMethod[] methods = iType.getMethods();
-			if (fields.length > 0 && methods.length >0) {
+//			if (fields.length > 0 && methods.length >0) {
 //				for (IField field : fields) {
 //					if (field.toString().indexOf("UeNasMode") != -1) {
 //						// System.out.println("YES++++++++++++++++++++++++++++++++++++++++++++++++YES");
@@ -177,14 +177,14 @@ public class ThroughputAction implements IObjectActionDelegate {
 //				}
 //			} else {
 				autoInputFieldContent = "\n    private void doMultiUeThroughput(){"
-						+ "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
-						+ "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
-						+ "\n        enbTestHelper.attachUes();"
-						+ "\n        enbTestHelper.startUserData(Protocol.UDP, Direction.BIDIRECTIONAL, duration);"
-						+ "\n        enbTestHelper.analyzeIperfDataWhenFinished(duration, Protocol.UDP, Direction.BIDIRECTIONAL);"
-						+ "\n        enbTestHelper.detachUes();"
-						+ "\n    }";
-			}
+			                          + "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
+						              + "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
+						              + "\n        enbTestHelper.attachUes();"
+						              + "\n        enbTestHelper.startUserData(Protocol.UDP, Direction.DOWNLINK, duration);"
+						              + "\n        enbTestHelper.analyzeIperfDataWhenFinished(duration, Protocol.UDP, Direction.DOWNLINK);"
+						              + "\n        enbTestHelper.detachUes();"
+						              + "\n    }";
+//			}
 
 //			IMethod[] methods = iType.getMethods();
 //			if (methods.length > 0) {

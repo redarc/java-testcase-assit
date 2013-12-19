@@ -175,7 +175,7 @@ public class AttachAction implements IObjectActionDelegate {
 //			}
 
 			IMethod[] methods = iType.getMethods();
-			if (methods.length > 0 && fields.length > 0) {
+//			if (methods.length > 0 && fields.length > 0) {
 //				for (IMethod method : methods) {
 //					if (iType.getMethods() != null) {
 //						if (method.getElementName().indexOf(
@@ -196,7 +196,7 @@ public class AttachAction implements IObjectActionDelegate {
 						              + "\n        enbTestHelper.detachUes();"
 						              + "\n        ueNasMode.terminateAll();"
 						              + "\n    }";
-			}
+//			}
 			// if (methods.length>0) {
 			// for (IMethod method : methods) {
 			// if (iType.getMethods() != null) {

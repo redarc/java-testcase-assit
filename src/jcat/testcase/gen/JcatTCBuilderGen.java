@@ -13,24 +13,18 @@ public class JcatTCBuilderGen
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ";" + NL + "" + NL + "import com.ericsson.msr.handlers.enums.Direction;" + NL + "import com.ericsson.msr.handlers.enums.Protocol;" + NL + "" + NL + "/**" + NL + "*   " + NL + "* @name ";
+  protected final String TEXT_2 = ";" + NL + "" + NL + "/**" + NL + "*   " + NL + "* @name ";
   protected final String TEXT_3 = NL + "*       " + NL + "* @author " + NL + "*       " + NL + "* @created " + NL + "*       " + NL + "* @description   A builder class for {@link ";
   protected final String TEXT_4 = "}. The setter methods can" + NL + "*               optionally be used to configure the test module. Call build to get an instance of" + NL + "*               {@link ";
   protected final String TEXT_5 = "}." + NL + "*       " + NL + "* @revision   " + NL + "*  " + NL + "*/" + NL + "" + NL + "public class ";
-  protected final String TEXT_6 = NL + "{" + NL + "    private String testId = null;" + NL + "    private String description = null;" + NL + "    private int duration = 0;" + NL + "    private Protocol protocol;" + NL + "    private Direction direction;" + NL + "    " + NL + "    private int ue_TotalNumber = 1;" + NL + "    private int ue_TputNumber = 1;" + NL + "    private String servingEUtranCell = null;" + NL + "" + NL + "    private final int MAX_AEROFLEX_UE_NUM = 128;" + NL + "    private final int MAX_EUTRANCELL_NUM = 12;" + NL + "    " + NL + "    private final int MAX_CELLCAPMAXTIMETHRESHOLD = 3000;" + NL + "" + NL + "    /**" + NL + "     * The constructor for this builder, should only be used by {@link ";
+  protected final String TEXT_6 = NL + "{" + NL + "    private String testId = null;" + NL + "    private String servingEUtranCell = null;" + NL + "" + NL + "    /**" + NL + "     * The constructor for this builder, should only be used by {@link ";
   protected final String TEXT_7 = "} " + NL + "     * " + NL + "     */" + NL + "    protected ";
   protected final String TEXT_8 = "(){}" + NL + "    " + NL + "     /**" + NL + "     * @param testId" + NL + "     *            Any string that is a unique identifier for the test" + NL + "     * @return" + NL + "     */" + NL + "    public ";
-  protected final String TEXT_9 = " setTestId(String testId) {" + NL + "        if (testId == null)" + NL + "            throw new NullPointerException(errorMessage(\"testId\"));" + NL + "        this.testId = testId;" + NL + "        return this;" + NL + "    }" + NL + "" + NL + "    public String getTestId(){" + NL + "        return testId;" + NL + "    }" + NL + "    " + NL + "     /**" + NL + "     * @param description" + NL + "     *            Any string that is a description for the test" + NL + "     * @return" + NL + "     */" + NL + "    public ";
-  protected final String TEXT_10 = " setDescription(String description) {" + NL + "        if(description == null) throw new NullPointerException(errorMessage(\"description\"));" + NL + "        this.description = description;" + NL + "        return this;" + NL + "    }" + NL + "" + NL + "    public String getDescription(){" + NL + "        return description;" + NL + "    }" + NL + "" + NL + "    private String errorMessage(String argName) {" + NL + "        return String.format(\"Null argument or error argument: '%s'\", argName);" + NL + "    }" + NL + "    " + NL + "     /**" + NL + "     * Must called after setCellCapMaxTimeThreshold()" + NL + "     * @param duration" + NL + "     *           Throughput duration" + NL + "     * @return" + NL + "     */" + NL + "    public ";
-  protected final String TEXT_11 = " setDuration(int duration) {" + NL + "        if(duration <= 0 || duration > MAX_CELLCAPMAXTIMETHRESHOLD) {" + NL + "            String errorMessage = String.format(\"duartion can not be smaller than 0\");" + NL + "            throw new IllegalArgumentException(errorMessage);" + NL + "        }" + NL + "        this.duration = duration;" + NL + "        return this;" + NL + "    }" + NL + "" + NL + "    public int getDuration()" + NL + "    {" + NL + "        return duration;" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * Sets PM_Even_testmodulebuilder parameter 'protocol' to the current protocol" + NL + "     * @param protocol" + NL + "     *            specify the kind of user data traffic" + NL + "     * @throws NullPointerException with argument \"protocol\" if input parameter is null" + NL + "     * @return object" + NL + "     */" + NL + "     public ";
-  protected final String TEXT_12 = " setProtocol(Protocol protocol) {" + NL + "         if(protocol == null) throw new NullPointerException(errorMessage(\"protocol\"));" + NL + "         this.protocol = protocol;" + NL + "         return this;" + NL + "     }" + NL + "" + NL + "     public Protocol getProtocol(){" + NL + "         return protocol;" + NL + "     }" + NL + "" + NL + "     /**" + NL + "     * Sets PM_Even_testmodulebuilder parameter 'direction' to the current direction" + NL + "     * @param direction" + NL + "     *            the direction for userdata" + NL + "     * @throws NullPointerException with argument \"direction\" if input parameter is null" + NL + "     * @return object" + NL + "     */" + NL + "     public ";
-  protected final String TEXT_13 = " setDirection(Direction direction) {" + NL + "         if(direction == null) throw new NullPointerException(errorMessage(\"direction\"));" + NL + "         this.direction = direction;" + NL + "         return this;" + NL + "     }" + NL + "" + NL + "     public Direction getDirection(){" + NL + "        return direction;" + NL + "     }" + NL + "     " + NL + "      /**" + NL + "      * Must called before setTputNumOfUes()" + NL + "      * @param ue_TotalNumber" + NL + "      *            Total number of UEs used" + NL + "      * @return" + NL + "      */" + NL + "     public ";
-  protected final String TEXT_14 = " setTotalNumOfUes(int ue_TotalNumber) {" + NL + "         if(ue_TotalNumber < 0 || ue_TotalNumber > MAX_AEROFLEX_UE_NUM) {" + NL + "             String errorMessage = String.format(\"numOfUes can not be negative: '%s'\", ue_TotalNumber);" + NL + "             throw new IllegalArgumentException(errorMessage);" + NL + "         }" + NL + "         this.ue_TotalNumber = ue_TotalNumber;" + NL + "         return this;" + NL + "     }" + NL + "" + NL + "     public int getTotalNumOfUes()" + NL + "     {" + NL + "         return ue_TotalNumber;" + NL + "     }" + NL + "" + NL + "     /**" + NL + "      * Must called after setTotalNumOfUes()" + NL + "      * @param ue_TputNumber" + NL + "      *            number of UEs used for Tput" + NL + "      * @return" + NL + "      */" + NL + "     public ";
-  protected final String TEXT_15 = " setTputNumOfUes(int ue_TputNumber) {" + NL + "         if(ue_TputNumber <= 0 || ue_TputNumber > ue_TotalNumber) {" + NL + "             String errorMessage = String.format(\"numOfUes can not be negative: '%s'\", ue_TputNumber);" + NL + "             throw new IllegalArgumentException(errorMessage);" + NL + "         }" + NL + "         this.ue_TputNumber = ue_TputNumber;" + NL + "         return this;" + NL + "     }" + NL + "" + NL + "     public int getTputNumOfUes()" + NL + "     {" + NL + "         return ue_TputNumber;" + NL + "     }" + NL + "" + NL + "     /**" + NL + "      * @param servingEUtranCell" + NL + "      *           number of cells be used Throughput" + NL + "      * @return" + NL + "      */" + NL + "     public ";
-  protected final String TEXT_16 = " setNumOfCells(String servingEUtranCell) {" + NL + "         if(Integer.parseInt(servingEUtranCell) <= 0 || Integer.parseInt(servingEUtranCell) > MAX_EUTRANCELL_NUM) {" + NL + "             String errorMessage = String.format(\"servingEUtranCell ID can not be smaller than 0\");" + NL + "             throw new IllegalArgumentException(errorMessage);" + NL + "         }" + NL + "         this.servingEUtranCell = servingEUtranCell;" + NL + "         return this;" + NL + "     }" + NL + "" + NL + "     public String getServingEUtranCell()" + NL + "     {" + NL + "         return servingEUtranCell;" + NL + "     }" + NL + "     " + NL + "     public ";
-  protected final String TEXT_17 = " build(){" + NL + "        return new ";
-  protected final String TEXT_18 = "(this);" + NL + "     }" + NL + "}";
-  protected final String TEXT_19 = NL;
+  protected final String TEXT_9 = " setTestId(String testId) {" + NL + "        if (testId == null)" + NL + "            throw new NullPointerException(errorMessage(\"testId\"));" + NL + "        this.testId = testId;" + NL + "        return this;" + NL + "    }" + NL + "" + NL + "    public String getTestId(){" + NL + "        return testId;" + NL + "    }" + NL + "" + NL + "     /**" + NL + "      * @param servingEUtranCell" + NL + "      *           number of cells be used Throughput" + NL + "      * @return" + NL + "      */" + NL + "     public ";
+  protected final String TEXT_10 = " setNumOfCells(String servingEUtranCell) {" + NL + "         if(Integer.parseInt(servingEUtranCell) <= 0 ) {" + NL + "             String errorMessage = String.format(\"servingEUtranCell ID can not be smaller than 0\");" + NL + "             throw new IllegalArgumentException(errorMessage);" + NL + "         }" + NL + "         this.servingEUtranCell = servingEUtranCell;" + NL + "         return this;" + NL + "     }" + NL + "" + NL + "     public String getServingEUtranCell()" + NL + "     {" + NL + "         return servingEUtranCell;" + NL + "     }" + NL + "     " + NL + "     private String errorMessage(String argName) {" + NL + "        return String.format(\"Null argument or error argument: '%s'\", argName);" + NL + "     }" + NL + "     " + NL + "     public ";
+  protected final String TEXT_11 = " build(){" + NL + "        return new ";
+  protected final String TEXT_12 = "(this);" + NL + "     }" + NL + "}";
+  protected final String TEXT_13 = NL;
 
   public String generate(Object argument)
   {
@@ -60,23 +54,11 @@ public class JcatTCBuilderGen
     stringBuffer.append(TEXT_9);
     stringBuffer.append(className);
     stringBuffer.append(TEXT_10);
-    stringBuffer.append(className);
+    stringBuffer.append(moduleName);
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(className);
+    stringBuffer.append(moduleName);
     stringBuffer.append(TEXT_12);
-    stringBuffer.append(className);
     stringBuffer.append(TEXT_13);
-    stringBuffer.append(className);
-    stringBuffer.append(TEXT_14);
-    stringBuffer.append(className);
-    stringBuffer.append(TEXT_15);
-    stringBuffer.append(className);
-    stringBuffer.append(TEXT_16);
-    stringBuffer.append(moduleName);
-    stringBuffer.append(TEXT_17);
-    stringBuffer.append(moduleName);
-    stringBuffer.append(TEXT_18);
-    stringBuffer.append(TEXT_19);
     return stringBuffer.toString();
   }
 }
