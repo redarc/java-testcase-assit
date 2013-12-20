@@ -190,6 +190,7 @@ public class AttachAction implements IObjectActionDelegate {
 //				}
 //			} else {
 				autoInputMethodContent ="\n    private void doAttachDetach(){"
+						              + "\n        ueNasMode = UeNasModeBuilders.fromCategoryNumber(LteRm.ue1,UeCategory.CAT4,ue_TotalNumber,Integer.parseInt(servingEUtranCell));"
 						              + "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
 						              + "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
 						              + "\n        enbTestHelper.attachUes();"

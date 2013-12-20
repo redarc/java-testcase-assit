@@ -176,7 +176,8 @@ public class ThroughputAction implements IObjectActionDelegate {
 //					}
 //				}
 //			} else {
-				autoInputFieldContent = "\n    private void doMultiUeThroughput(){"
+				autoInputFieldContent = "\n    private void doThroughput(){"
+						              + "\n        ueNasMode = UeNasModeBuilders.fromCategoryNumber(LteRm.ue1,UeCategory.CAT4, ue_TputNumber, Integer.parseInt(servingEUtranCell));"
 			                          + "\n        UeHandler.getInstance(LteRm.ue1).setUeNasMode(ueNasMode);"
 						              + "\n        UeHandler.getInstance(LteRm.ue1).setCellIds(Integer.parseInt(servingEUtranCell));"
 						              + "\n        enbTestHelper.attachUes();"

@@ -13,8 +13,6 @@ package <%=pkgName%>;
 import org.testng.annotations.*;
 import se.ericsson.jcat.fw.annotations.*;
 import com.ericsson.tac.jcat.TestBase;
-import com.ericsson.ate.*;
-import com.ericsson.msr.*;
 
 /**
 *

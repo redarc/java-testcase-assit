@@ -10,13 +10,8 @@
 %>
 package <%=pkgName%>;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
 import com.ericsson.ate.lte_ran_iov.testsupport.other.LteRm;
 import com.ericsson.ate.lte_ran_iov.testsupport.tool.uetools.ueinterfaces.UeNasMode;
-import com.ericsson.msr.handlers.EnbConfigHandler;
 import com.ericsson.msr.handlers.EnbConfigHandlerBuilder;
 import com.ericsson.msr.handlers.EnbHandler;
 import com.ericsson.msr.handlers.UeHandler;
@@ -65,7 +60,6 @@ public class <%=className%> extends TestBase{
     
     public void execute() {
         try {
-            ueNasMode = UeNasModeBuilders.fromCategoryNumber(LteRm.ue1,UeCategory.CAT4,ue_TotalNumber,Integer.parseInt(servingEUtranCell));
             enbHandler = EnbHandler.getInstance(LteRm.enb1);
             enbTestHelper = new EnbTestHelper(testId, LteRm.enb1,enbOriginalConfig.build());        
             //TODO write your test code here

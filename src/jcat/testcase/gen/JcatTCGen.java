@@ -13,7 +13,7 @@ public class JcatTCGen
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ";" + NL + "" + NL + "import org.testng.annotations.*;" + NL + "import se.ericsson.jcat.fw.annotations.*;" + NL + "import com.ericsson.tac.jcat.TestBase;" + NL + "import com.ericsson.ate.*;" + NL + "import com.ericsson.msr.*;" + NL + "" + NL + "/**" + NL + "*" + NL + "* @name ";
+  protected final String TEXT_2 = ";" + NL + "" + NL + "import org.testng.annotations.*;" + NL + "import se.ericsson.jcat.fw.annotations.*;" + NL + "import com.ericsson.tac.jcat.TestBase;" + NL + "" + NL + "/**" + NL + "*" + NL + "* @name ";
   protected final String TEXT_3 = NL + "*" + NL + "* @author " + NL + "*" + NL + "* @created " + NL + "*" + NL + "* @modified " + NL + "*" + NL + "* @revision " + NL + "*" + NL + "* @description  This test uses the {@link ";
   protected final String TEXT_4 = "ModuleBuilder} to configure and build a" + NL + "*       {@link ";
   protected final String TEXT_5 = "Module}. Then the test modules execute(test) method is executed." + NL + "*" + NL + "* @precondition Requires the hardware described in {@link ";
