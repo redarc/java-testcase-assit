@@ -1,2 +1,2 @@
-jcat-testcase-assit
+java-testcase-assit
 ===================
